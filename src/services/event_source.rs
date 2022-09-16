@@ -1,22 +1,19 @@
 use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{EventSource, MessageEvent};
-use yew_agent::Dispatched;
+use yew::Callback;
 
-use crate::services::event_bus::{EventBus, Req};
-
-pub struct EvenSourceService {
+pub struct EventSourceService {
     pub es: EventSource,
     _cb: Closure<dyn FnMut(MessageEvent) -> ()>
 }
-impl EvenSourceService {
-    pub fn new(url: &str) -> Self {
-        let event_source = EventSource::new(url).unwrap();
-        let mut event_bus = EventBus::dispatcher();
+impl EventSourceService {
+    pub fn new(url: String, callback: Callback<String>) -> Self {
+        let event_source = EventSource::new(&url).unwrap();
 
         let cb = Closure::wrap(
             Box::new(move |event: MessageEvent| {
                 let text = event.data().as_string();
-                event_bus.send(Req::Msg(text.unwrap()));
+                callback.emit(text.unwrap());
             }) as Box<dyn FnMut(MessageEvent)>
         );
 
