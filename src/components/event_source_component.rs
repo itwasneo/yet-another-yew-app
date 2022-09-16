@@ -1,21 +1,20 @@
 use yew::prelude::*;
 use yew_agent::{Bridge, Bridged};
 
-use crate::services::event_source::EvenSourceService;
 use crate::services::event_bus::EventBus;
 
 pub enum SSE {
     HandleEvent(String),
 }
 
-#[derive(PartialEq, Properties)]
+#[derive(Properties, PartialEq)]
 pub struct Props {
-    pub url: String,
+    #[prop_or_default]
+    pub children: Children,
 }
 
 pub struct EventSourceComponent {
     msg: String,
-    ess: EvenSourceService,
     _producer: Box<dyn Bridge<EventBus>>,
 }
 impl Component for EventSourceComponent {
@@ -23,10 +22,8 @@ impl Component for EventSourceComponent {
     type Properties = Props;
 
     fn create(ctx: &Context<Self>) -> Self {
-        let ess = EvenSourceService::new(&ctx.props().url);
         Self {
             msg: "".to_string(),
-            ess,
             _producer: EventBus::bridge(ctx.link().callback(SSE::HandleEvent))
         }
     }
@@ -40,18 +37,12 @@ impl Component for EventSourceComponent {
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         html! {
-            <div>
-                <p>
-                    { self.msg.clone() }
-                </p>
+            <div class={self.msg.clone()}>
+                { for ctx.props().children.iter() }
             </div>
         }
-    }
-
-    fn destroy(&mut self, _ctx: &Context<Self>) {
-        self.ess.es.close();
     }
 
 }
