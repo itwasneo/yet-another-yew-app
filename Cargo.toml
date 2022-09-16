@@ -1,0 +1,13 @@
+[package]
+name = "yet-another-yew-app"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+lto = true
+
+[dependencies]
+yew = "0.19"
+yew-agent = "0.1.0"
+wasm-bindgen = "0.2.83"
+web-sys = { version = "0.3.60", features = ["EventSource"] }
