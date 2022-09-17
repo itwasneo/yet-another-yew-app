@@ -1,9 +1,16 @@
 use std::collections::HashSet;
 use yew_agent:: {Agent, AgentLink, Context, HandlerId};
 
-#[derive(Debug)]
-pub enum Request {
-    EventBusMsg(u64),
+#[derive(Debug, PartialEq, Clone)]
+pub enum BusMessage {
+    Main(u64),
+    Replica(u64),
+}
+
+#[derive(PartialEq, Clone)]
+pub enum BusMessageTopic {
+    Main,
+    Replica,
 }
 
 pub struct EventBus {
@@ -13,8 +20,8 @@ pub struct EventBus {
 impl Agent for EventBus {
     type Reach = Context<Self>;
     type Message = ();
-    type Input = Request;
-    type Output = u64;
+    type Input = BusMessage;
+    type Output = BusMessage;
 
     fn create(link: AgentLink<Self>) -> Self {
         Self {
@@ -26,12 +33,8 @@ impl Agent for EventBus {
     fn update(&mut self, _msg: Self::Message){}
 
     fn handle_input(&mut self, msg: Self::Input, _id: HandlerId) {
-        match msg {
-            Request::EventBusMsg(s) => {
-                for sub in self.subscribers.iter() {
-                    self.link.respond(*sub, s.clone());
-                }
-            }
+        for sub in self.subscribers.iter() {
+            self.link.respond(*sub, msg.clone());
         }
     }
 

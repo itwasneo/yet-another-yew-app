@@ -5,6 +5,7 @@ use yew::{function_component, html};
 
 use crate::components::event_source_component::EventSourceComponent;
 use crate::components::latency_component::LatencyComponent;
+use crate::services::event_bus::BusMessageTopic;
 
 #[function_component(Body)]
 fn body() -> Html {
@@ -14,8 +15,8 @@ fn body() -> Html {
             <div class="container">
                 <h1>{"two component listening different event sources"}</h1>
                 <div class="inner-container">
-                    <EventSourceComponent url="http://localhost:7070/sse" title="main"/>
-                    <EventSourceComponent url="http://localhost:7071/sse" title="replica"/>
+                    <EventSourceComponent url="http://localhost:7070/sse" title="main" topic={BusMessageTopic::Main}/>
+                    <EventSourceComponent url="http://localhost:7071/sse" title="replica" topic={BusMessageTopic::Replica}/>
                 </div>
                 <LatencyComponent/>
                 <footer>

@@ -10,18 +10,20 @@ pub struct EventSourceService {
 
 #[derive(Deserialize, Debug)]
 pub struct EventSourceData {
-    epoch: u64,
+    pub epoch: u64,
+    pub pair: String,
+    pub close: String,
 }
 
 impl EventSourceService {
-    pub fn new(url: String, callback: Callback<u64>) -> Self {
+    pub fn new(url: String, callback: Callback<EventSourceData>) -> Self {
         let event_source = EventSource::new(&url).unwrap();
 
         let cb = Closure::wrap(
             Box::new(move |event: MessageEvent| {
                 let text = event.data().as_string();
                 let e = serde_json::from_str::<EventSourceData>(&text.as_ref().unwrap());
-                callback.emit(e.unwrap().epoch);
+                callback.emit(e.unwrap());
             }) as Box<dyn FnMut(MessageEvent)>
         );
 
