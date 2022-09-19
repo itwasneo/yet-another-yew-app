@@ -14,6 +14,15 @@ pub struct EventSourceData {
     pub pair: String,
     pub close: String,
 }
+impl Default for EventSourceData {
+    fn default() -> Self {
+        Self {
+            epoch: 0,
+            pair: "Unknown".to_string(),
+            close: "Unknown".to_string(),
+        }
+    }
+}
 
 impl EventSourceService {
     pub fn new(url: String, callback: Callback<EventSourceData>) -> Self {

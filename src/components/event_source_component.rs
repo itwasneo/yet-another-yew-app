@@ -14,12 +14,12 @@ pub struct Props {
 #[function_component(EventSourceComponent)]
 pub fn event_source_component(props: &Props) -> Html {
 
-    let epoch = use_state(  || 0);
+    let data = use_state(  || EventSourceData::default());
     
     let cb = {
-        let epoch = epoch.clone();
+        let data = data.clone();
         Callback::from(move |new: EventSourceData| {
-            epoch.set(new.epoch);
+            data.set(new);
         })
     };
 
@@ -27,24 +27,30 @@ pub fn event_source_component(props: &Props) -> Html {
 
     let eb = use_mut_ref(|| EventBus::dispatcher());
     {
-        let epoch = epoch.clone();
+        let data = data.clone();
         let msg = match props.topic {
             BusMessageTopic::Main => |msg| BusMessage::Main(msg),
             BusMessageTopic::Replica => |msg| BusMessage::Replica(msg),
         };
         use_effect(move || {
-            eb.as_ref().borrow_mut().send(msg(*epoch));
+            eb.as_ref().borrow_mut().send(msg(data.epoch));
             || {}
         });
     }
 
     html! {
-        <div class="center">
+        <div class="event-source">
             <h2>
-                {props.title.clone()}
+            { props.title.clone() }
             </h2>
             <p>
-            { (*epoch).clone() }
+            { data.pair.clone() }
+            </p>
+            <p>
+            { data.close.trim_end_matches(char::from(48)) }
+            </p>
+            <p>
+            { data.epoch.clone() }
             </p>
         </div>
     }

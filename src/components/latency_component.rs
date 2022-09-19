@@ -1,5 +1,6 @@
 use yew::prelude::*;
 use yew_agent::{Bridged};
+use gloo_utils::document;
 
 use crate::services::event_bus::{EventBus, BusMessage};
 
@@ -44,6 +45,35 @@ pub fn latency_component() -> Html{
 
     {
         let latency = latency.clone();
+        use_effect(move || {
+            match document().get_element_by_id("showcase") {
+                Some(elem) => {
+                    match elem.set_attribute("style", &format!("gap: {}em", latency.latency)) {
+                        Ok(_) => {},
+                        Err(e) => log::error!("Error setting attribute: {:?}", e)
+                    }
+                }
+                None => {
+                    log::error!("#showcase not found");
+                }
+            }
+
+            || match document().get_element_by_id("showcase") {
+                Some(elem) => {
+                    match elem.set_attribute("gap", "10em") {
+                        Ok(_) => {},
+                        Err(e) => log::error!("Error setting attribute: {:?}", e)
+                    }
+                }
+                None => {
+                    log::error!("#showcase not found");
+                }
+            }
+        });
+    }
+
+    {
+        let latency = latency.clone();
         use_ref(|| EventBus::bridge(Callback::from(move |msg| {
             match msg {
                 BusMessage::Main(u) => {
@@ -59,12 +89,12 @@ pub fn latency_component() -> Html{
     }
 
     html! {
-        <div class="center">
+        <div class="latency">
             <h2>
                 {"latency"}
             </h2>
             <p>
-            { latency.latency }
+            { format!("{}ms", latency.latency) }
             </p>
         </div>
     }

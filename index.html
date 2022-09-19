@@ -35,18 +35,46 @@
             align-items: center;
             gap: 1em;
         }
-        .center {
+        .event-source {
             width: fit-content;
             padding: 1em;
             background-color: #aaaaaa;
             border: 1px solid #242026;
-            border-radius: .5em;
+            border-radius: .3em;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
             vertical-align: middle;
             text-align: center;
+        }
+        .latency {
+            width: fit-content;
+            color: #cccccc;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .latency > h2 {
+            margin: 0;
+        }
+        .latency > p {
+            font-size: 2em;
+            margin: 0;
         }
         .footer {
             font-size: 3em;
             color: #cccccc;
+        }
+        .arrow {
+            border: solid #cccccc;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: .5em;
+        }
+        .right {
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+        .left {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
         }
     </style>
 </head>
