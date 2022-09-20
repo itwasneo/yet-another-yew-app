@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+
+    sse-7070:
+        container_name: sse-7070
+        build:
+          context: dummy-sse-services
+          args:
+            port: 7070
+            delay: 0
+        image: itwasneo/dummy-sse-service-7070:latest
+        ports:
+        - 7070:7070
+
+    sse-7071:
+        container_name: sse-7071
+        build:
+          context: dummy-sse-services
+          args:
+            port: 7071
+            delay: 2000
+        image: itwasneo/dummy-sse-service-7071:latest
+        ports:
+        - 7071:7071

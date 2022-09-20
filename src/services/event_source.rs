@@ -1,12 +1,7 @@
-use serde::Deserialize;
-use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{EventSource, MessageEvent};
 use yew::Callback;
-
-pub struct EventSourceService {
-    pub es: EventSource,
-    _cb: Closure<dyn FnMut(MessageEvent) -> ()>
-}
+use wasm_bindgen::{closure::Closure, JsCast};
+use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct EventSourceData {
@@ -24,6 +19,10 @@ impl Default for EventSourceData {
     }
 }
 
+pub struct EventSourceService {
+    pub es: EventSource,
+    _cb: Closure<dyn FnMut(MessageEvent) -> ()>
+}
 impl EventSourceService {
     pub fn new(url: String, callback: Callback<EventSourceData>) -> Self {
         let event_source = EventSource::new(&url).unwrap();

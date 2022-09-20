@@ -11,21 +11,19 @@ use crate::services::event_bus::BusMessageTopic;
 fn app() -> Html {
 
     html! {
-        <body>
-            <div class="container">
-                <h1>{"vamos Connect!!!"}</h1>
-                <div class="inner-container" id="showcase">
-                    <EventSourceComponent url="http://localhost:7070/sse" title="main" topic={BusMessageTopic::Main}/>
-                    <i class="arrow left"></i>
-                    <LatencyComponent/>
-                    <i class="arrow right"></i>
-                    <EventSourceComponent url="http://localhost:7071/sse" title="replica" topic={BusMessageTopic::Replica}/>
-                </div>
-                <footer>
-                    <p class="footer">{"yew\u{00a0}🧡\u{00a0}wasm"}</p>
-                </footer>
+        <div class="container">
+            <h1>{"vamos Connect!!!"}</h1>
+            <div class="inner-container" id="showcase">
+                <EventSourceComponent url="http://localhost:7070/sse" title="main" topic={BusMessageTopic::Main}/>
+                <i class="arrow left"></i>
+                <LatencyComponent/>
+                <i class="arrow right"></i>
+                <EventSourceComponent url="http://localhost:7071/sse" title="replica" topic={BusMessageTopic::Replica}/>
             </div>
-        </body>
+            <footer>
+                <p class="footer">{"yew\u{00a0}🧡\u{00a0}wasm"}</p>
+            </footer>
+        </div>
     }
 }
 
