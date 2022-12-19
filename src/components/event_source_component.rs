@@ -1,8 +1,8 @@
 use yew::prelude::*;
 use yew_agent::Dispatched;
 
-use crate::services::event_source::{EventSourceService, EventSourceData};
-use crate::services::event_bus::{EventBus, BusMessage, BusMessageTopic};
+use crate::services::event_bus::{BusMessage, BusMessageTopic, EventBus};
+use crate::services::event_source::{EventSourceData, EventSourceService};
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -13,9 +13,8 @@ pub struct Props {
 
 #[function_component(EventSourceComponent)]
 pub fn event_source_component(props: &Props) -> Html {
+    let data = use_state(|| EventSourceData::default());
 
-    let data = use_state(  || EventSourceData::default());
-    
     let cb = {
         let data = data.clone();
         Callback::from(move |new: EventSourceData| {
@@ -54,5 +53,4 @@ pub fn event_source_component(props: &Props) -> Html {
             </p>
         </div>
     }
-
 }

@@ -43,8 +43,8 @@ pub fn latency_component() -> Html {
             match document().get_element_by_id("showcase") {
                 Some(elem) => {
                     match elem.set_attribute("style", &format!("gap: {}em", latency.latency)) {
-                        Ok(_) => {},
-                        Err(e) => log::error!("Error setting attribute: {:?}", e)
+                        Ok(_) => {}
+                        Err(e) => log::error!("Error setting attribute: {:?}", e),
                     }
                 }
                 None => {
